@@ -6,24 +6,21 @@ import SMB_Supermario from '../assets/image/SMB_Supermario.png';
 import SMB_Firemario from '../assets/image/SMB_Firemario.png';
 import SMB_Die from '../assets/image/pin_game_over_mario.png';
 import "./style.css";
-import { marioMachine } from "../state_machine/mario";
-import { useMachine } from "@xstate/react";
 
 export default function GameMario() {
-  const [state, send] = useMachine(marioMachine);
-  const {score, lifespan} = state.context;
+  
 
   const handleGetCoin = function() {
-    send('TAKE_COIN');
+    
   };
   const handleEat = function() {
-    send('EAT_SM');
+    
   };
   const handleDamage = function() {
-    send('GET_DAMAGE');
+    
   };
   const handleLives = function() {
-    send('EAT_1UP_M');
+    
   };
   
   const marioState = function(value){
@@ -43,11 +40,11 @@ export default function GameMario() {
   }
   return (
     <div className="container">
-      <Header score={score} lifespan={lifespan} />
+      <Header score={0} lifespan={3} />
       <div className="content">
         
-        <div className={`${state.value === 'gameOver' ? 'border-gameover': 'border-gameplay'}`}>
-          <img src={marioState(state.value)} alt="mario" className="mario"/>
+        <div className={`${'' === 'gameOver' ? 'border-gameover': 'border-gameplay'}`}>
+          <img src={marioState('')} alt="mario" className="mario"/>
         </div>
       </div>
       <Footer 
@@ -55,7 +52,7 @@ export default function GameMario() {
         onSuper={handleEat} 
         onLives={handleLives} 
         onDamage={handleDamage} 
-        marioState={state.value}
+        marioState={'mario'}
       />
     </div>
   );

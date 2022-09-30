@@ -1,32 +1,62 @@
-import React, {useState} from "react";
+import React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
 import SMB_Smallmario from '../assets/image/SMB_Smallmario.png';
 import SMB_Supermario from '../assets/image/SMB_Supermario.png';
 import SMB_Firemario from '../assets/image/SMB_Firemario.png';
+import SMB_Die from '../assets/image/pin_game_over_mario.png';
 import "./style.css";
+import { marioMachine } from "../state_machine/mario";
+import { useMachine } from "@xstate/react";
 
 export default function GameMario() {
-  const [mario, setMario] = useState(SMB_Smallmario);
+  const [state, send] = useMachine(marioMachine);
+  const {score, lifespan} = state.context;
+
+  const handleGetCoin = function() {
+    send('TAKE_COIN');
+  };
   const handleEat = function() {
-    console.log("eat");
-    setMario(SMB_Supermario)
+    send('EAT_SM');
   };
   const handleDamage = function() {
-    console.log("damage");
+    send('GET_DAMAGE');
   };
   const handleLives = function() {
-    console.log("lives");
+    send('EAT_1UP_M');
   };
+  
+  const marioState = function(value){
+    switch(value){
+      case 'mario':
+        return SMB_Smallmario;
+      case 'superMario':
+        return SMB_Supermario;
+      case 'fireMario':
+        return SMB_Firemario;
+      case 'gameOver':
+        return SMB_Die;
+      default:
+        return SMB_Smallmario;
+      
+    }
+  }
   return (
     <div className="container">
-      <Header score={100} lifespan={3} />
+      <Header score={score} lifespan={lifespan} />
       <div className="content">
-        <div className="border-gameplay">
-          <img src={mario} alt="mario" className="mario"/>
+        
+        <div className={`${state.value === 'gameOver' ? 'border-gameover': 'border-gameplay'}`}>
+          <img src={marioState(state.value)} alt="mario" className="mario"/>
         </div>
       </div>
-      <Footer onSuper={handleEat} onLives={handleLives} onDamage={handleDamage} />
+      <Footer 
+        onCoin={handleGetCoin} 
+        onSuper={handleEat} 
+        onLives={handleLives} 
+        onDamage={handleDamage} 
+        marioState={state.value}
+      />
     </div>
   );
 }

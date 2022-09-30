@@ -43,6 +43,18 @@
     background-size: cover;
 }
 
+.border-gameover{
+    height: 100%;
+    width: calc(100% / 2);
+    border: 2px solid;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-image: url("../assets/image/game-over.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
 .mario{
     width: 10%;
     height: 20%;
